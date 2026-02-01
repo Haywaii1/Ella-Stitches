@@ -1,5 +1,7 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from "react-router-dom";
+
 
 export default function AboutPage() {
     return (
@@ -50,12 +52,12 @@ export default function AboutPage() {
                     >
                         Contact
                     </a>
-                    <button
+                    {/* <button
                         className="btn rounded-pill px-4 py-2"
                         style={{ backgroundColor: "rgba(212, 175, 55, 0.5)", color: "#fff" }}
                     >
                         Shop
-                    </button>
+                    </button> */}
                 </nav>
             </header>
 
@@ -122,7 +124,7 @@ export default function AboutPage() {
                     </div>
                 </section>
 
-                <section className="text-center mb-5">
+                {/* <section className="text-center mb-5">
                     <h3 className="fw-bold fs-5 mb-4" style={{ color: "rgba(212, 175, 55, 0.5)" }}
                     >Milestones</h3>
                     <ul className="list-unstyled mx-auto" style={{ maxWidth: '400px' }}>
@@ -143,7 +145,7 @@ export default function AboutPage() {
                             <div className="small text-light-50">2023 — Honored for sustainable innovation</div>
                         </li>
                     </ul>
-                </section>
+                </section> */}
 
                 <section className="text-center mb-5">
                     <div className="p-4 rounded-3 border-start border-4 mx-auto" style={{ backgroundColor: '#2b1a1f', borderColor: '#d63384', maxWidth: '600px' }}>
@@ -159,7 +161,13 @@ export default function AboutPage() {
                     <div className="p-5 rounded-3 mx-auto" style={{ backgroundColor: '#2b1a1f', maxWidth: '600px' }}>
                         <h5 className="fw-semibold">Ready to Join the Narrative?</h5>
                         <p className="small text-light-50">Explore the latest collection where every thread tells a story.</p>
-                        <button className="btn rounded-pill px-4 py-2 mt-2" style={{ backgroundColor: '#d63384', color: '#fff' }}>View Latest Collection</button>
+                        <Link
+                            to="/collections"
+                            className="btn rounded-pill px-4 py-2 mt-2"
+                            style={{ backgroundColor: "#d63384", color: "#fff" }}
+                        >
+                            View Latest Collection
+                        </Link>
                     </div>
                 </section>
             </main>

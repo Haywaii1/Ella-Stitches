@@ -83,60 +83,63 @@ export default function Contact() {
             }}
         >
             {/* ===== NAVBAR ===== */}
-            <nav
-                className="navbar navbar-expand-lg py-3 px-4"
-                style={{
-                    backgroundColor: "rgba(0,0,0,0.9)",
-                    borderBottom: `1px solid ${gold}`,
-                }}
-            >
-                <div className="container-fluid d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center gap-2">
-                        <img
-                            src="/images/logo-gold.png"
-                            alt="Stitches by Ella Logo"
-                            className="h-[90px] w-auto object-contain ml-3"
-                        />
-                    </div>
-                    <div>
-                        <Link
-                            to="/"
-                            className="mx-3 text-decoration-none fw-semibold"
-                            style={{ color: gold }}
-                        >
-                            Home
-                        </Link>
-                        <Link
-                            to="/collections"
-                            className="mx-3 text-decoration-none fw-semibold"
-                            style={{ color: gold }}
-                        >
-                            Collections
-                        </Link>
-                        <Link
-                            to="/about"
-                            className="mx-3 text-decoration-none fw-semibold"
-                            style={{ color: gold }}
-                        >
-                            About
-                        </Link>
-                        <Link
-                            to="/contact"
-                            className="mx-3 text-decoration-none fw-bold"
-                            style={{
-                                color: gold,
-                                borderBottom: `2px solid ${gold}`,
-                                paddingBottom: "3px",
-                            }}
-                        >
-                            Contact
-                        </Link>
-                    </div>
+            <header className="container py-4 d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center gap-2">
+                    <img
+                        src="/images/logo-gold.png"
+                        alt="Aura Logo"
+                        className="h-[90px] w-auto object-contain ml-3"
+                    />
                 </div>
-            </nav>
+
+                <nav className="d-none d-md-flex gap-4 align-items-center">
+                    <a
+                        href="/"
+                        className="text-decoration-none text-white fw-semibold transition-all"
+                        style={{ transition: "color 0.3s ease" }}
+                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
+                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    >
+                        Home
+                    </a>
+                    <a
+                        href="/collections"
+                        className="text-decoration-none text-white fw-semibold transition-all"
+                        style={{ transition: "color 0.3s ease" }}
+                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
+                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    >
+                        Collections
+                    </a>
+                    <a
+                        href="/about"
+                        className="text-decoration-none text-white fw-semibold transition-all"
+                        style={{ transition: "color 0.3s ease" }}
+                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
+                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    >
+                        About
+                    </a>
+                    <a
+                        href="/contact-us"
+                        className="text-decoration-none text-white fw-semibold transition-all"
+                        style={{ transition: "color 0.3s ease" }}
+                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
+                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    >
+                        Contact
+                    </a>
+                    {/* <button
+                        className="btn rounded-pill px-4 py-2"
+                        style={{ backgroundColor: "rgba(212, 175, 55, 0.5)", color: "#fff" }}
+                    >
+                        Shop
+                    </button> */}
+                </nav>
+            </header>
 
             {/* ===== HERO ===== */}
-            <header
+            <section
                 className="text-center py-5"
                 style={{
                     background: "linear-gradient(to bottom, rgba(0,0,0,0.7), #1a0f0a)",
@@ -147,27 +150,27 @@ export default function Contact() {
                     Get In Touch
                 </h1>
                 <p className="text-light" data-aos="fade-up" style={{ color: "#f4e8d6" }}>
-                    For collaborations, press inquiries, or custom orders — we’d love to hear from you.
+                    For apppointments, inquiries or custom orders — we’d love to hear from you.
                 </p>
-            </header>
+            </section>
 
             {/* ===== CONTACT SECTION ===== */}
             <section className="container py-5">
                 <div className="row g-5">
                     {/* --- Contact Info --- */}
                     <div className="col-md-5" data-aos="fade-right">
-                        <h4 className="fw-bold mb-4" style={{ color: gold }}>
+                        <h4 className="fw-bold mb-4" sstyle={{ color: "#f4e8d6" }}>
                             Contact Details
                         </h4>
                         <ul className="list-unstyled">
-                            <li className="d-flex align-items-center mb-3">
-                                <Mail className="me-3" color={gold} /> studio@stitchesbyella.com
+                            <li className="d-flex align-items-center mb-3" style={{ color: "#f4e8d6" }}>
+                                <Mail className="me-3" /> studio@stitchesbyella.com
                             </li>
-                            <li className="d-flex align-items-center mb-3">
-                                <Phone className="me-3" color={gold} /> +234 802 608 5555
+                            <li className="d-flex align-items-center mb-3" style={{ color: "#f4e8d6" }}>
+                                <Phone className="me-3" /> +234 802 608 5555
                             </li>
-                            <li className="d-flex align-items-center mb-3">
-                                <MapPin className="me-3" color={gold} /> 93 Oshola Street, Ogba, Lagos, Nigeria
+                            <li className="d-flex align-items-center mb-3" style={{ color: "#f4e8d6" }}>
+                                <MapPin className="me-3" /> 93 Oshola Street, Ogba, Lagos, Nigeria
                             </li>
                         </ul>
 
@@ -175,10 +178,10 @@ export default function Contact() {
                             Follow The Journey
                         </h5>
                         <div className="d-flex gap-4 mt-3">
-                            <a href="#" style={{ color: gold, fontSize: "1.5rem" }}>
+                            <a href="#" style={{ color: "#f4e8d6", fontSize: "1.5rem" }}>
                                 <Instagram />
                             </a>
-                            <a href="#" style={{ color: gold, fontSize: "1.5rem" }}>
+                            <a href="#" style={{ color: "#f4e8d6", fontSize: "1.5rem" }}>
                                 <Facebook />
                             </a>
                         </div>

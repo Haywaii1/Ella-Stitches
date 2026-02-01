@@ -9,6 +9,8 @@ import Collection from "./components/Collection.jsx";
 import CollectionDetail from "./components/CollectionDetail.jsx";
 import AddCollection from "./components/AddCollection.jsx";
 import ContactUs from "./components/ContactUs.jsx";
+import ManageCollections from "./components/ManageCollections.jsx";
+
 
 
 
@@ -21,9 +23,10 @@ ReactDOM.createRoot(document.getElementById("app")).render(
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/collections" element={<Collection />} />
-                <Route path="/collections/:id" element={<CollectionDetail />} />
+                <Route path="/collections/:slug" element={<CollectionDetail />} />
                 <Route path="/add-collection" element={<AddCollection />} />
                 <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/manage-collections" element={<ManageCollections />} />
             </Routes>
         </Router>
     </React.StrictMode>

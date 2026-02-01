@@ -13,18 +13,23 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $collections = Collection::all();
-        $collections->transform(function ($item) {
+        $collections = Collection::latest()->paginate(8);
+
+        $collections->getCollection()->transform(function ($item) {
             foreach (['image1', 'image2', 'image3'] as $f) {
-                if ($item->$f)
-                    $item->$f = asset(Storage::url($item->$f));
-                else
-                    $item->$f = null;
+                $item->$f = $item->$f
+                    ? asset(Storage::url($item->$f))
+                    : null;
             }
             return $item;
         });
-        return response()->json(['data' => $collections, 'last_page' => 1]);
 
+        return response()->json([
+            'data' => $collections->items(),
+            'current_page' => $collections->currentPage(),
+            'last_page' => $collections->lastPage(),
+            'total' => $collections->total(),
+        ]);
     }
 
 
@@ -32,9 +37,9 @@ class CollectionController extends Controller
     /**
      * Display a single collection
      */
-    public function show($id)
+    public function show($slug)
     {
-        $collection = Collection::findOrFail($id);
+        $collection = Collection::where('slug', $slug)->firstOrFail();
 
         foreach (['image1', 'image2', 'image3'] as $field) {
             if ($collection->$field) {
@@ -85,5 +90,22 @@ class CollectionController extends Controller
             'message' => 'Collection added successfully!',
             'collection' => $collection,
         ], 201);
+    }
+
+    public function destroy($id)
+    {
+        $collection = Collection::findOrFail($id);
+
+        foreach (['image1', 'image2', 'image3'] as $field) {
+            if ($collection->$field) {
+                Storage::disk('public')->delete($collection->$field);
+            }
+        }
+
+        $collection->delete();
+
+        return response()->json([
+            'message' => 'Collection deleted successfully'
+        ]);
     }
 }

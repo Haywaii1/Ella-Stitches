@@ -92,7 +92,7 @@ export default function Collection() {
                             {link}
                         </a>
                     ))}
-                    <button
+                    {/* <button
                         className="btn rounded-pill px-4 py-2"
                         style={{
                             backgroundColor: "rgba(212, 175, 55, 0.6)",
@@ -100,7 +100,7 @@ export default function Collection() {
                         }}
                     >
                         Shop
-                    </button>
+                    </button> */}
                 </nav>
             </header>
 
@@ -110,7 +110,7 @@ export default function Collection() {
                 <p className="text-light-50 mb-4">
                     An immersive gallery of elegance and impact.
                 </p>
-
+                {/* 
                 <div className="d-flex justify-content-center gap-2 flex-wrap">
                     {categories.map((cat, index) => (
                         <button
@@ -129,7 +129,7 @@ export default function Collection() {
                             {cat}
                         </button>
                     ))}
-                </div>
+                </div> */}
             </section>
 
             {/* ===== Collection Grid ===== */}
@@ -143,7 +143,7 @@ export default function Collection() {
                             data-aos-delay={i * 80}
                         >
                             <Link
-                                to={`/collections/${item.id}`}
+                                to={`/collections/${item.slug}`}
                                 className="text-decoration-none d-block"
                                 style={{ color: "inherit" }}
                             >
