@@ -160,7 +160,7 @@ export default function Home() {
                     <div className="row g-4">
                         {[
                             {
-                                img: "/images/test1.jpg",
+                                img: "/images/home.png",
                                 name: "Olivia Chen",
                                 title: "Fashion Blogger",
                                 quote:
@@ -174,7 +174,7 @@ export default function Home() {
                                     "Impeccable tailoring and unparalleled quality. Every piece is a statement.",
                             },
                             {
-                                img: "/images/test3.jpg",
+                                img: "/images/home2.jpg",
                                 name: "Sofia Rossi",
                                 title: "Art Director",
                                 quote:
@@ -187,8 +187,13 @@ export default function Home() {
                                         src={t.img}
                                         alt={t.name}
                                         className="card-img-top rounded-top-4"
-                                        style={{ height: 250, objectFit: "cover" }}
+                                        style={{
+                                            height: 250,
+                                            objectFit: "cover",
+                                            objectPosition: "top"
+                                        }}
                                     />
+
                                     <div className="card-body text-start px-4">
                                         <p className="fst-italic text-white-50">
                                             “{t.quote}”
@@ -280,7 +285,7 @@ export default function Home() {
                         <div className="d-flex justify-content-center mt-4">
                             <div className="d-flex gap-4">
                                 <a
-                                    href="#"
+                                    href="https://www.instagram.com/stitches_by_ella?igsh=N2RrZ2t3MXFxN3Iz"
                                     aria-label="Instagram"
                                     className="text-white-50"
                                     style={{ transition: "all 0.3s ease" }}
@@ -297,7 +302,7 @@ export default function Home() {
                                 </a>
 
                                 <a
-                                    href="#"
+                                    href="https://web.facebook.com/ellacheks/photos/?_rdc=1&_rdr#"
                                     aria-label="Facebook"
                                     className="text-white-50"
                                     style={{ transition: "all 0.3s ease" }}
@@ -331,9 +336,6 @@ export default function Home() {
                                 </a>
                             </div>
                         </div>
-
-
-
                     </div>
                 </footer>
 
