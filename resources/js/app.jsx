@@ -10,7 +10,13 @@ import CollectionDetail from "./components/CollectionDetail.jsx";
 import AddCollection from "./components/AddCollection.jsx";
 import ContactUs from "./components/ContactUs.jsx";
 import ManageCollections from "./components/ManageCollections.jsx";
-
+import CollectionPage from "./pages/collections/CollectionPages";
+// import AllCollections from "./pages/collections/AllCollections";
+// import Ellure from "./pages/collections/Ellure";
+// import Ellanella from "./pages/collections/Ellanella";
+// import Ellatique from "./pages/collections/Ellatique";
+// import Sutella from "./pages/collections/Sutella";
+// import Tailella from "./pages/collections/Tailella";
 
 
 
@@ -23,10 +29,11 @@ ReactDOM.createRoot(document.getElementById("app")).render(
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/collections" element={<Collection />} />
-                <Route path="/collections/:slug" element={<CollectionDetail />} />
                 <Route path="/add-collection" element={<AddCollection />} />
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/manage-collections" element={<ManageCollections />} />
+                <Route path="/collections/:category" element={<CollectionPage />} />
+                <Route path="/collections/:category/:slug" element={<CollectionDetail />} />
             </Routes>
         </Router>
     </React.StrictMode>

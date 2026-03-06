@@ -63,6 +63,7 @@ class CollectionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category' => 'required|string|in:ellure,ellanella,ellatique,sutella,tailella',
             'image1' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image2' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image3' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -81,6 +82,7 @@ class CollectionController extends Controller
         $collection = Collection::create([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
+            'category' => $validated['category'],
             'image1' => $paths['image1'],
             'image2' => $paths['image2'],
             'image3' => $paths['image3'],
@@ -107,5 +109,12 @@ class CollectionController extends Controller
         return response()->json([
             'message' => 'Collection deleted successfully'
         ]);
+    }
+
+    public function byCategory($category)
+    {
+        return Collection::whereRaw('LOWER(category) = ?', [strtolower($category)])
+            ->latest()
+            ->get();
     }
 }

@@ -14,6 +14,7 @@ class Collection extends Model
     protected $fillable = [
         'name',
         'description',
+        'category',
         'image1',
         'image2',
         'image3',

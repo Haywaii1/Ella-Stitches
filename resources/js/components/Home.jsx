@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Instagram, Facebook, Twitter } from "lucide-react";
-
+import { useRef } from "react";
+import { Dropdown } from "bootstrap";
 
 export default function Home() {
     useEffect(() => {
@@ -16,37 +17,158 @@ export default function Home() {
         });
     }, []);
 
+    const [isOpen, setIsOpen] = useState(false);
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+    const collections = [
+        { name: "All Collections", path: "/collections" },
+        { name: "The Ellure Collection", path: "/collections/ellure" },
+        { name: "The Ellanella Collection", path: "/collections/ellanella" },
+        { name: "The Ellatique Collection", path: "/collections/ellatique" },
+        { name: "The Sutella Collection", path: "/collections/sutella" },
+        { name: "The Tailella Collection", path: "/collections/tailella" },
+    ];
+
     return (
         <div style={{ backgroundColor: "#0b0608", color: "#fff" }}>
             {/* ===== NAVBAR ===== */}
-            <header className="container py-4 d-flex justify-content-between align-items-center">
-                <img
-                    src="/images/logo-gold.png"
-                    alt="Stitches by Ella"
-                    style={{ height: 90 }}
-                />
+            <header className="container-fluid px-4 py-3 position-fixed top-0 start-0 w-100 z-3"
+                style={{
+                    background: "rgba(0,0,0,0.85)",
+                    backdropFilter: "blur(8px)",
+                    borderBottom: "1px solid rgba(212,175,55,0.2)"
+                }}
+            >
+                <div className="container d-flex justify-content-between align-items-center">
 
-                <nav className="d-none d-md-flex gap-4 align-items-center">
-                    {[
-                        { name: "Home", path: "/" },
-                        { name: "Collections", path: "/collections" },
-                        { name: "About", path: "/about" },
-                        { name: "Contact", path: "/contact-us" },
-                    ].map((item) => (
+                    {/* Logo */}
+                    <Link to="/">
+                        <img
+                            src="/images/logo-gold.png"
+                            alt="Stitches by Ella"
+                            style={{ height: 70 }}
+                        />
+                    </Link>
+
+                    {/* Hamburger Button (Mobile) */}
+                    <button
+                        className="navbar-toggler d-md-none border-0"
+                        type="button"
+                        onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+                    >
+                        <span className="navbar-toggler-icon"
+                            style={{
+                                filter: "invert(1)"
+                            }}
+                        />
+                    </button>
+
+                    {/* Desktop Nav */}
+                    <nav className="d-none d-md-flex gap-5 align-items-center">
+
+                        {/* Home */}
                         <Link
-                            key={item.name}
-                            to={item.path}
-                            className="text-decoration-none text-white fw-semibold"
-                            style={{ transition: "color 0.3s ease" }}
-                            onMouseEnter={(e) => (e.target.style.color = "#d4af37")}
-                            onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                            to="/"
+                            className="text-decoration-none fw-semibold"
+                            style={{ color: "#fff", transition: "0.3s" }}
+                            onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                            onMouseLeave={(e) => e.target.style.color = "#fff"}
                         >
-                            {item.name}
+                            Home
                         </Link>
-                    ))}
-                </nav>
-            </header>
 
+                        {/* Collections Dropdown */}
+                        <div
+                            className="position-relative d-flex align-items-center"
+                            onMouseEnter={() => setIsOpen(true)}
+                            onMouseLeave={() => setIsOpen(false)}
+                        >
+                            <span
+                                className="fw-semibold"
+                                style={{
+                                    cursor: "pointer",
+                                    color: isOpen ? "#d4af37" : "#fff",
+                                    transition: "0.3s"
+                                }}
+                            >
+                                Collections
+                            </span>
+
+                            <div
+                                className="position-absolute start-0 top-100 px-4 py-3 rounded-4 shadow-lg"
+                                style={{
+                                    backgroundColor: "#000",
+                                    minWidth: 240,
+                                    opacity: isOpen ? 1 : 0,
+                                    transform: isOpen
+                                        ? "translateY(0px)"
+                                        : "translateY(-10px)",
+                                    transition: "all 0.3s ease",
+                                    pointerEvents: isOpen ? "auto" : "none",
+                                    border: "1px solid rgba(212,175,55,0.2)"
+                                }}
+                            >
+                                {collections.map((item, i) => (
+                                    <Link
+                                        key={i}
+                                        to={item.path}
+                                        className="d-block text-decoration-none py-2"
+                                        style={{ color: "#fff" }}
+                                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                                        onMouseLeave={(e) => e.target.style.color = "#fff"}
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {item.name}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* About */}
+                        <Link
+                            to="/about"
+                            className="text-decoration-none fw-semibold"
+                            style={{ color: "#fff", transition: "0.3s" }}
+                            onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                            onMouseLeave={(e) => e.target.style.color = "#fff"}
+                        >
+                            About
+                        </Link>
+
+                        {/* Contact */}
+                        <Link
+                            to="/contact-us"
+                            className="text-decoration-none fw-semibold"
+                            style={{ color: "#fff", transition: "0.3s" }}
+                            onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                            onMouseLeave={(e) => e.target.style.color = "#fff"}
+                        >
+                            Contact
+                        </Link>
+
+                    </nav>
+                </div>
+
+                {/* MOBILE NAV PANEL */}
+                <div
+                    className="d-md-none position-absolute top-100 start-0 w-100"
+                    style={{
+                        backgroundColor: "#000",
+                        overflow: "hidden",
+                        maxHeight: isMobileNavOpen ? "500px" : "0px",
+                        transition: "max-height 0.4s ease"
+                    }}
+                >
+                    <div className="container py-4 d-flex flex-column gap-3">
+
+                        <Link to="/" className="text-white text-decoration-none">Home</Link>
+                        <Link to="/collections" className="text-white text-decoration-none">Collections</Link>
+                        <Link to="/about" className="text-white text-decoration-none">About</Link>
+                        <Link to="/contact-us" className="text-white text-decoration-none">Contact</Link>
+
+                    </div>
+                </div>
+            </header>
             {/* ===== HERO SECTION ===== */}
             <section
                 className="position-relative d-flex align-items-center justify-content-center text-center"

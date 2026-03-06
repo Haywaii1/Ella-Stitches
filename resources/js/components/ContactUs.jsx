@@ -16,6 +16,18 @@ export default function Contact() {
     const [sent, setSent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false); // ✅ disable button while sending
 
+    const [isOpen, setIsOpen] = useState(false);
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+    const collections = [
+        { name: "All Collections", path: "/collections" },
+        { name: "The Ellure Collection", path: "/collections/ellure" },
+        { name: "The Ellanella Collection", path: "/collections/ellanella" },
+        { name: "The Ellatique Collection", path: "/collections/ellatique" },
+        { name: "The Sutella Collection", path: "/collections/sutella" },
+        { name: "The Tailella Collection", path: "/collections/tailella" },
+    ];
+
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
     }, []);
@@ -92,49 +104,88 @@ export default function Contact() {
                     />
                 </div>
 
-                <nav className="d-none d-md-flex gap-4 align-items-center">
-                    <a
-                        href="/"
-                        className="text-decoration-none text-white fw-semibold transition-all"
-                        style={{ transition: "color 0.3s ease" }}
-                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
-                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                <nav className="d-none d-md-flex gap-5 align-items-center">
+
+                    {/* Home */}
+                    <Link
+                        to="/"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
                     >
                         Home
-                    </a>
-                    <a
-                        href="/collections"
-                        className="text-decoration-none text-white fw-semibold transition-all"
-                        style={{ transition: "color 0.3s ease" }}
-                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
-                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    </Link>
+
+                    {/* Collections Dropdown */}
+                    <div
+                        className="position-relative d-flex align-items-center"
+                        onMouseEnter={() => setIsOpen(true)}
+                        onMouseLeave={() => setIsOpen(false)}
                     >
-                        Collections
-                    </a>
-                    <a
-                        href="/about"
-                        className="text-decoration-none text-white fw-semibold transition-all"
-                        style={{ transition: "color 0.3s ease" }}
-                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
-                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                        <span
+                            className="fw-semibold"
+                            style={{
+                                cursor: "pointer",
+                                color: isOpen ? "#d4af37" : "#fff",
+                                transition: "0.3s"
+                            }}
+                        >
+                            Collections
+                        </span>
+
+                        <div
+                            className="position-absolute start-0 top-100 px-4 py-3 rounded-4 shadow-lg"
+                            style={{
+                                backgroundColor: "#000",
+                                minWidth: 240,
+                                opacity: isOpen ? 1 : 0,
+                                transform: isOpen
+                                    ? "translateY(0px)"
+                                    : "translateY(-10px)",
+                                transition: "all 0.3s ease",
+                                pointerEvents: isOpen ? "auto" : "none",
+                                border: "1px solid rgba(212,175,55,0.2)"
+                            }}
+                        >
+                            {collections.map((item, i) => (
+                                <Link
+                                    key={i}
+                                    to={item.path}
+                                    className="d-block text-decoration-none py-2"
+                                    style={{ color: "#fff" }}
+                                    onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                                    onMouseLeave={(e) => e.target.style.color = "#fff"}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* About */}
+                    <Link
+                        to="/about"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
                     >
                         About
-                    </a>
-                    <a
-                        href="/contact-us"
-                        className="text-decoration-none text-white fw-semibold transition-all"
-                        style={{ transition: "color 0.3s ease" }}
-                        onMouseEnter={(e) => (e.target.style.color = "#0d6efd")}
-                        onMouseLeave={(e) => (e.target.style.color = "#ffffff")}
+                    </Link>
+
+                    {/* Contact */}
+                    <Link
+                        to="/contact-us"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
                     >
                         Contact
-                    </a>
-                    {/* <button
-                        className="btn rounded-pill px-4 py-2"
-                        style={{ backgroundColor: "rgba(212, 175, 55, 0.5)", color: "#fff" }}
-                    >
-                        Shop
-                    </button> */}
+                    </Link>
+
                 </nav>
             </header>
 

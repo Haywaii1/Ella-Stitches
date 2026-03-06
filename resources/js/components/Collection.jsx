@@ -5,53 +5,97 @@ import "aos/dist/aos.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Collection() {
+
     const [collections, setCollections] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
     const [activeCategory, setActiveCategory] = useState("All");
+
     const [page, setPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
 
-    const categories = ["All", "Spring/Summer 2024", "Ready-to-Wear", "Couture"];
+    const [isOpen, setIsOpen] = useState(false);
 
-    // 🎨 Initialize AOS
+    // Navbar dropdown links
+    const collectionLinks = [
+        { name: "All Collections", path: "/collections" },
+        { name: "The Ellure Collection", path: "/collections/ellure" },
+        { name: "The Ellanella Collection", path: "/collections/ellanella" },
+        { name: "The Ellatique Collection", path: "/collections/ellatique" },
+        { name: "The Sutella Collection", path: "/collections/sutella" },
+        { name: "The Tailella Collection", path: "/collections/tailella" },
+    ];
+
+
+    // Initialize animations
     useEffect(() => {
-        AOS.init({ duration: 1000, once: true, easing: "ease-out-cubic" });
+        AOS.init({
+            duration: 900,
+            once: true,
+            easing: "ease-out-cubic"
+        });
     }, []);
 
-    // 🟢 Fetch from Laravel API
+
+    // Fetch collections from Laravel
     useEffect(() => {
+
         setLoading(true);
+
         fetch(`http://127.0.0.1:8000/api/collections?page=${page}`)
-            .then((res) => {
-                if (!res.ok) throw new Error("Network response was not ok");
-                return res.json();
-            })
+            .then((res) => res.json())
             .then((data) => {
-                if (data && data.data) {
-                    setCollections(data.data);
-                    setLastPage(data.last_page || 1);
-                } else {
-                    setCollections([]);
-                }
+
+                setCollections(data.data || []);
+                setLastPage(data.last_page || 1);
+
                 setError(null);
+
             })
             .catch((err) => {
-                console.error("Error fetching collections:", err);
-                setError("Failed to load collections. Please check your API.");
-                setCollections([]);
+
+                console.error(err);
+                setError("Unable to load collections");
+
             })
             .finally(() => setLoading(false));
+
     }, [page]);
 
-    // 🧭 Filter by category
-    const filtered = useMemo(() => {
-        if (activeCategory === "All") return collections;
-        return collections.filter((c) => c.category === activeCategory);
-    }, [activeCategory, collections]);
 
-    const getAosType = (i) =>
-        ["fade-up", "fade-right", "fade-left", "zoom-in"][i % 4];
+    // Build categories dynamically
+    const categories = useMemo(() => {
+
+        const cats = collections.map((c) => c.category).filter(Boolean);
+
+        return ["All", ...new Set(cats)];
+
+    }, [collections]);
+
+
+    // Filter collections
+    const filteredCollections = useMemo(() => {
+
+        if (activeCategory === "All") return collections;
+
+        return collections.filter(
+            (c) => c.category?.toLowerCase() === activeCategory.toLowerCase()
+        );
+
+    }, [collections, activeCategory]);
+
+
+    // Image helper
+    const getImage = (img) => {
+
+        if (!img) return "/images/placeholder.jpg";
+
+        if (img.startsWith("http")) return img;
+
+        return `http://127.0.0.1:8000/storage/${img}`;
+    };
+
 
     if (loading)
         return (
@@ -67,132 +111,226 @@ export default function Collection() {
             </div>
         );
 
+
     return (
-        <div style={{ backgroundColor: "#2a1720", color: "#efe6e8", minHeight: "100vh" }}>
-            {/* ===== Navbar ===== */}
+
+        <div style={{ background: "#2a1720", color: "#efe6e8", minHeight: "100vh" }}>
+
+            {/* Navbar */}
             <header className="container py-4 d-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center gap-2">
+
+                <Link to="/">
                     <img
                         src="/images/logo-gold.png"
-                        alt="Aura Logo"
-                        className="h-[90px] w-auto object-contain ml-3"
+                        alt="Ellas Stitches"
+                        style={{ height: 80 }}
                     />
-                </div>
+                </Link>
 
-                <nav className="d-none d-md-flex gap-4 align-items-center">
-                    {["Home", "Collections", "About", "Contact-us"].map((link, index) => (
-                        <a
-                            key={index}
-                            href={link === "Home" ? "/" : `/${link.toLowerCase()}`}
-                            className="text-decoration-none fw-semibold text-white"
-                            style={{ transition: "color 0.3s ease" }}
-                            onMouseEnter={(e) => (e.target.style.color = "rgba(212, 175, 55, 1)")}
-                            onMouseLeave={(e) => (e.target.style.color = "white")}
-                        >
-                            {link}
-                        </a>
-                    ))}
-                    {/* <button
-                        className="btn rounded-pill px-4 py-2"
-                        style={{
-                            backgroundColor: "rgba(212, 175, 55, 0.6)",
-                            color: "#fff",
-                        }}
+                <nav className="d-none d-md-flex gap-5 align-items-center">
+
+                    {/* Home */}
+                    <Link
+                        to="/"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
                     >
-                        Shop
-                    </button> */}
+                        Home
+                    </Link>
+
+                    {/* Collections Dropdown */}
+                    <div
+                        className="position-relative d-flex align-items-center"
+                        onMouseEnter={() => setIsOpen(true)}
+                        onMouseLeave={() => setIsOpen(false)}
+                    >
+                        <span
+                            className="fw-semibold"
+                            style={{
+                                cursor: "pointer",
+                                color: isOpen ? "#d4af37" : "#fff",
+                                transition: "0.3s"
+                            }}
+                        >
+                            Collections
+                        </span>
+
+                        <div
+                            className="position-absolute start-0 top-100 px-4 py-3 rounded-4 shadow-lg"
+                            style={{
+                                backgroundColor: "#000",
+                                minWidth: 240,
+                                opacity: isOpen ? 1 : 0,
+                                transform: isOpen
+                                    ? "translateY(0px)"
+                                    : "translateY(-10px)",
+                                transition: "all 0.3s ease",
+                                pointerEvents: isOpen ? "auto" : "none",
+                                border: "1px solid rgba(212,175,55,0.2)"
+                            }}
+                        >
+                            {collectionLinks.map((item, i) => (
+                                <Link
+                                    key={i}
+                                    to={item.path}
+                                    className="d-block text-decoration-none py-2"
+                                    style={{ color: "#fff" }}
+                                    onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                                    onMouseLeave={(e) => e.target.style.color = "#fff"}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* About */}
+                    <Link
+                        to="/about"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
+                    >
+                        About
+                    </Link>
+
+                    {/* Contact */}
+                    <Link
+                        to="/contact-us"
+                        className="text-decoration-none fw-semibold"
+                        style={{ color: "#fff", transition: "0.3s" }}
+                        onMouseEnter={(e) => e.target.style.color = "#d4af37"}
+                        onMouseLeave={(e) => e.target.style.color = "#fff"}
+                    >
+                        Contact
+                    </Link>
+
                 </nav>
             </header>
 
-            {/* ===== Hero Section ===== */}
+
+            {/* Hero */}
             <section className="container text-center mb-5">
-                <h1 className="fw-bold display-6">The Collections</h1>
+
+                <h1 className="fw-bold display-6 mb-2">
+                    The Collections
+                </h1>
+
                 <p className="text-light-50 mb-4">
-                    An immersive gallery of elegance and impact.
+                    Discover elegance in every stitch.
                 </p>
-                {/* 
-                <div className="d-flex justify-content-center gap-2 flex-wrap">
-                    {categories.map((cat, index) => (
+
+
+                {/* Category Filters */}
+                <div className="d-flex justify-content-center flex-wrap gap-2">
+
+                    {categories.map((cat, i) => (
+
                         <button
-                            key={index}
+                            key={i}
                             onClick={() => setActiveCategory(cat)}
-                            className={`btn rounded-pill px-3 py-1 fw-semibold ${activeCategory === cat ? "text-white" : "text-light-50"
-                                }`}
+                            className="btn btn-sm rounded-pill px-3 fw-semibold"
                             style={{
-                                backgroundColor:
+                                border: "1px solid rgba(212,175,55,0.5)",
+                                background:
                                     activeCategory === cat
-                                        ? "rgba(212, 175, 55, 0.5)"
+                                        ? "rgba(212,175,55,0.5)"
                                         : "transparent",
-                                border: "1px solid rgba(212, 175, 55, 0.5)",
+                                color: "#fff"
                             }}
                         >
                             {cat}
                         </button>
+
                     ))}
-                </div> */}
+
+                </div>
+
             </section>
 
-            {/* ===== Collection Grid ===== */}
-            <section className="container mb-5">
+
+            {/* Collection Grid */}
+            <section className="container pb-5">
+
                 <div className="row g-4">
-                    {filtered.map((item, i) => (
+
+                    {filteredCollections.map((item, i) => (
+
                         <div
                             key={item.id}
-                            className="col-6 col-md-3 text-center"
-                            data-aos={getAosType(i)}
-                            data-aos-delay={i * 80}
+                            className="col-6 col-md-3"
+                            data-aos="fade-up"
+                            data-aos-delay={i * 70}
                         >
+
                             <Link
-                                to={`/collections/${item.slug}`}
-                                className="text-decoration-none d-block"
-                                style={{ color: "inherit" }}
+                                to={`/collections/${item.category}/${item.slug}`}
+                                className="text-decoration-none"
                             >
-                                <div className="rounded-4 overflow-hidden shadow-sm mb-2 collection-card">
+
+                                <div className="rounded-4 overflow-hidden shadow-sm">
+
                                     <img
-                                        src={
-                                            item.image1?.startsWith("http")
-                                                ? item.image1
-                                                : `http://127.0.0.1:8000/storage/${item.image1}`
-                                        }
+                                        src={getImage(item.image1)}
                                         alt={item.name}
-                                        className="w-100 img-fluid"
-                                        style={{ objectFit: "cover", height: "350px" }}
+                                        className="img-fluid w-100"
+                                        style={{
+                                            height: 350,
+                                            objectFit: "cover"
+                                        }}
                                         loading="lazy"
                                     />
+
                                 </div>
 
-                                <div
-                                    className="fw-semibold collection-title mb-1"
-                                    style={{ color: "rgba(212, 175, 55, 0.75)" }}
-                                >
-                                    {item.name}
+                                <div className="text-center mt-2">
+
+                                    <div
+                                        className="fw-semibold"
+                                        style={{ color: "rgba(212,175,55,0.8)" }}
+                                    >
+                                        {item.name}
+                                    </div>
+
+                                    <div className="small text-light-50">
+                                        {item.description}
+                                    </div>
+
                                 </div>
-                                <div className="small text-light-50">
-                                    {item.description}
-                                </div>
+
                             </Link>
+
                         </div>
+
                     ))}
 
-                    {filtered.length === 0 && (
-                        <div className="col-12 text-center text-muted py-6">
-                            No items found.
-                        </div>
-                    )}
                 </div>
+
+                {filteredCollections.length === 0 && (
+                    <div className="text-center text-muted py-5">
+                        No collections available.
+                    </div>
+                )}
+
             </section>
 
-            {/* ===== Pagination ===== */}
-            <div className="d-flex justify-content-center align-items-center mt-4 gap-2 pb-5">
+
+            {/* Pagination */}
+            <div className="d-flex justify-content-center gap-3 pb-5">
+
                 <button
                     className="btn btn-outline-light btn-sm"
                     disabled={page === 1}
                     onClick={() => setPage(page - 1)}
                 >
-                    ‹ Prev
+                    Prev
                 </button>
 
-                <span className="text-light">
+                <span>
                     Page {page} of {lastPage}
                 </span>
 
@@ -201,9 +339,11 @@ export default function Collection() {
                     disabled={page === lastPage}
                     onClick={() => setPage(page + 1)}
                 >
-                    Next ›
+                    Next
                 </button>
+
             </div>
+
         </div>
     );
 }
